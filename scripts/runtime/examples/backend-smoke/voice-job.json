@@ -1,0 +1,12 @@
+{
+  "schema_version": "0.1",
+  "id": "backend-smoke",
+  "artifact_version": "backend-smoke-voice-v1",
+  "purpose": "technical_validation",
+  "render_job": "job.json",
+  "speakers": { "narrator": "VOLCENGINE_TTS_SPEAKER_NARRATOR" },
+  "subtitle_max_chars": 14,
+  "segments": [
+    { "id": "line-01", "scene_id": "calibration", "speaker": "narrator", "text": "我们一起看一看。", "start_ms": 500, "end_ms": 3500 }
+  ]
+}

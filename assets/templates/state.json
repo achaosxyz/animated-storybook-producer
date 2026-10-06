@@ -1,0 +1,11 @@
+{
+  "schema_version": "0.1",
+  "episode_id": null,
+  "artifact_version": 1,
+  "state": "DRAFT",
+  "gates": {
+    "A": {"status": "pending", "artifact_version": null, "reviewed_by": null, "reviewed_at": null, "evidence": null},
+    "B": {"status": "pending", "artifact_version": null, "reviewed_by": null, "reviewed_at": null, "evidence": null},
+    "C": {"status": "pending", "artifact_version": null, "reviewed_by": null, "reviewed_at": null, "evidence": null}
+  }
+}

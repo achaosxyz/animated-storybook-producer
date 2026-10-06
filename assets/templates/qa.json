@@ -1,0 +1,10 @@
+{
+  "schema_version": "0.1",
+  "episode_id": null,
+  "artifact_version": null,
+  "attempt": 0,
+  "status": "pending",
+  "checks": {},
+  "evidence": [],
+  "issues": []
+}

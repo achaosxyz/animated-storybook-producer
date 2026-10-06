@@ -1,0 +1,11 @@
+{
+  "schema_version": "0.1",
+  "ip_id": null,
+  "proposal_id": null,
+  "status": "pending",
+  "characters": [],
+  "canonical_version": null,
+  "reviewed_by": null,
+  "reviewed_at": null,
+  "evidence": null
+}

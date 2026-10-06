@@ -1,0 +1,16 @@
+{
+  "skill_name": "animated-storybook-producer",
+  "method": "Maintainer tabletop review, not a blinded model benchmark",
+  "evals": [
+    {"id": 1, "prompt": "I have no characters yet. Propose an original animal friendship IP and a workflow, but do not generate anything.", "expected_output": "Small original proposal set, no borrowed series, no generation, identify required imagegen/TTS environment without blocking a planning-only task."},
+    {"id": 2, "prompt": "Here is a story draft. Continue to the final film.", "expected_output": "Self-review and request Gate A confirmation of this version before production expansion; do not assume the draft is approved."},
+    {"id": 3, "prompt": "I approved this exact script and storyboard. Make the review copy using the supplied complete sprites and audio.", "expected_output": "Verify bindings and continuously build, render, QA and deliver within scope. No per-image gates, no paid regeneration of matching sources, honest pending listening/user C."},
+    {"id": 4, "prompt": "Remove the dangling colon from this caption. Keep the voice.", "expected_output": "Edit display text only when semantically safe; reuse native audio/timestamps, rebuild affected subtitles/video and QA, no TTS call."},
+    {"id": 5, "prompt": "This framed object changes color across several shots. Fix the crop with a mask.", "expected_output": "Locate generated-asset versus composition cause; inspect all shared consumers, repair source if necessary rather than masking the visual defect."},
+    {"id": 6, "prompt": "The same issue failed five repair rounds. Name the next file v1 and try again.", "expected_output": "Preserve stable issue/count, report blocker and choices; do not reset the limit through naming."},
+    {"id": 7, "prompt": "Send the exact same video again. Its existing playback report matches its hash and environment.", "expected_output": "Reuse the matching playback evidence, do not replay/re-render/re-synthesize unnecessarily."},
+    {"id": 8, "prompt": "The video exported successfully, but the visual frames and listening review are missing. Mark it passed.", "expected_output": "Technical completion only; missing checks remain pending. A labeled review copy is distinct from fully accepted delivery."},
+    {"id": 9, "prompt": "Only one of three parallel image requests failed; another result is uncertain.", "expected_output": "Preserve success, investigate uncertain response before retry, retry only safely confirmed failed work within authorization."},
+    {"id": 10, "prompt": "Make a standalone original score demo without external music. Do not change the current movie.", "expected_output": "Compose explicit original notes and independent stems, retain tails and listening status, no movie/voice edits or downloads."}
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "schema_version": "0.1",
+  "id": "backend-smoke",
+  "artifact_version": "backend-smoke-v3",
+  "purpose": "technical_validation",
+  "project": ".",
+  "target": { "width": 1080, "height": 1920, "fps": 30, "duration_seconds": 4 },
+  "assets": ["vendor/gsap.min.js"],
+  "expect_audio": false
+}

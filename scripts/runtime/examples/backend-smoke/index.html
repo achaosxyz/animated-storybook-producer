@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080, height=1920">
+  <title>后端技术校验 · 非 IP 故事样片</title>
+  <script src="vendor/gsap.min.js"></script>
+  <style>
+    html, body { margin: 0; width: 100%; height: 100%; background: #f4f0e5; }
+    #root { position: relative; width: 100%; height: 100%; overflow: hidden; }
+    .clip { position: absolute; inset: 0; }
+    .layer { position: absolute; inset: 0; transform-origin: 50% 55%; }
+    .disk { position: absolute; width: 180px; height: 180px; border-radius: 50%; }
+    #far-disk { left: 670px; top: 240px; background: #c9d9ce; }
+    #plane { position: absolute; left: 100px; right: 100px; top: 1200px; height: 300px; background: #d5dfd4; border-radius: 40px; }
+    #marker { left: 230px; top: 900px; background: #cc7052; }
+    #pose-a, #pose-b { position: absolute; left: 650px; top: 940px; width: 160px; height: 140px; border-radius: 28px; background: #719b94; }
+    #pose-b { border-radius: 70px; background: transparent; opacity: 0; }
+    #front-bar { position: absolute; left: 180px; right: 180px; top: 1540px; height: 90px; }
+    #front-canvas { display: block; width: 100%; height: 90px; }
+  </style>
+</head>
+<body>
+  <div data-hf-id="hf-8nkh" id="root" data-composition-id="backend-smoke" data-start="0" data-width="1080" data-height="1920" data-fps="30" data-duration="4">
+    <section data-hf-id="hf-4pdo" id="calibration" class="clip" data-start="0" data-duration="4" data-track-index="0">
+      <div data-hf-id="hf-v8wo" id="far" class="layer"><div data-hf-id="hf-c03m" id="far-disk" class="disk"></div></div>
+      <div data-hf-id="hf-1d11" id="stage" class="layer">
+        <div data-hf-id="hf-koth" id="plane"></div><div data-hf-id="hf-5jcr" id="marker" class="disk"></div><div data-hf-id="hf-8mfs" id="pose-a"></div>
+        <svg data-hf-id="hf-1vho" id="pose-b" viewBox="0 0 160 140" aria-label="SVG 技术状态"><path data-hf-id="hf-b829" d="M20 70Q40 10 80 20Q130 30 140 70Q120 130 80 120Q30 120 20 70Z" fill="#527d78" /></svg>
+      </div>
+      <div data-hf-id="hf-290e" id="foreground" class="layer"><div data-hf-id="hf-jfm2" id="front-bar"><canvas data-hf-id="hf-bfmb" id="front-canvas" width="720" height="90" aria-label="Canvas 技术绘制"></canvas></div></div>
+    </section>
+  </div>
+  <script>
+    const canvas = document.querySelector('#front-canvas');
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#809866';
+    ctx.fillRect(18, 18, 684, 54);
+    ctx.fillStyle = '#b6c997';
+    for (let i = 0; i < 9; i += 1) ctx.fillRect(30 + i * 76, 28, 24, 34);
+    const tl = gsap.timeline({ paused: true });
+    tl.addLabel('establish', 0).addLabel('state-change', 2).addLabel('hold', 3.5);
+    tl.fromTo('#marker', { x: 0 }, { x: 200, duration: 1.5, ease: 'power2.inOut' }, 0.25);
+    tl.set('#pose-a', { opacity: 0 }, 'state-change');
+    tl.set('#pose-b', { opacity: 1 }, 'state-change');
+    tl.fromTo('#far', { x: 0, scale: 1 }, { x: -18, scale: 1.02, duration: 1.5, ease: 'sine.inOut' }, 'state-change');
+    tl.fromTo('#stage', { x: 0, scale: 1 }, { x: -60, scale: 1.06, duration: 1.5, ease: 'sine.inOut' }, 'state-change');
+    tl.fromTo('#foreground', { x: 0, scale: 1 }, { x: -84, scale: 1.09, duration: 1.5, ease: 'sine.inOut' }, 'state-change');
+    window.__timelines['backend-smoke'] = tl;
+  </script>
+</body>
+</html>

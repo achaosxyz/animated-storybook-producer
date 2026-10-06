@@ -1,0 +1,15 @@
+{
+  "schema_version": "0.1",
+  "id": null,
+  "artifact_version": 1,
+  "ip_id": null,
+  "canonical_version": null,
+  "target": {
+    "duration_seconds": 30,
+    "aspect_ratio": "9:16",
+    "fps": 30,
+    "language": "zh-CN"
+  },
+  "characters": [],
+  "scenes": []
+}

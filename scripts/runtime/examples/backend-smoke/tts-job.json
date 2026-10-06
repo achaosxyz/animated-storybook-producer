@@ -1,0 +1,10 @@
+{
+  "schema_version": "0.1",
+  "id": "tts-smoke",
+  "artifact_version": "tts-smoke-v1",
+  "purpose": "technical_validation",
+  "provider": "volcengine",
+  "speaker_env": "VOLCENGINE_TTS_SPEAKER_NARRATOR",
+  "text": "我们一起看一看。",
+  "voice_direction": "用温暖、好奇的语气自然地说，清晰柔和，不夸张。"
+}

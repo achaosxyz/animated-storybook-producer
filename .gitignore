@@ -1,0 +1,17 @@
+node_modules/
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.env.*
+*.pem
+*.key
+.hyperframes/
+vendor/
+renders/
+build/
+dist/
+.DS_Store
+
+# Local production work, never public source.
+.build/

@@ -1,0 +1,18 @@
+{
+  "schema_version": "0.1",
+  "id": null,
+  "ip_id": null,
+  "language": "zh-CN",
+  "format": "both",
+  "topic": null,
+  "relationship_theme": null,
+  "origin": "original",
+  "sources": [],
+  "review": {
+    "status": "pending",
+    "artifact_version": 1,
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "evidence": null
+  }
+}

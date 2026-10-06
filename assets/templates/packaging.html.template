@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script src="vendor/gsap.min.js"></script>
+<style>
+@font-face{font-family:'Packaging';src:url('assets/{{FONT_FILE}}');font-display:block}
+html,body{margin:0;width:100%;height:100%}
+#root{position:relative;width:100%;height:100%;overflow:hidden;background:{{BACKGROUND_COLOR}};color:{{TEXT_COLOR}};font-family:'Packaging'}
+#layout{position:absolute;inset:12%;display:flex;flex-direction:column;justify-content:center;text-align:center;gap:32px}
+#label{font-size:32px;letter-spacing:4px}
+#title{font-size:64px;line-height:1.3}
+#detail{font-size:30px;line-height:1.4}
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="{{COMPOSITION_ID}}" data-width="{{WIDTH}}" data-height="{{HEIGHT}}" data-fps="{{FPS}}" data-duration="{{DURATION}}">
+<section id="card" class="clip" data-start="0" data-duration="{{DURATION}}" data-track-index="0">
+<div id="layout"><div id="label">{{LABEL}}</div><div id="title">{{TITLE}}</div><div id="detail">{{DETAIL}}</div></div>
+</section>
+</div>
+<script>
+const timeline=gsap.timeline({paused:true});
+timeline.fromTo('#layout',{opacity:0},{opacity:1,duration:0.4,ease:'sine.out'},0);
+window.__timelines['{{COMPOSITION_ID}}']=timeline;
+</script>
+</body>
+</html>
