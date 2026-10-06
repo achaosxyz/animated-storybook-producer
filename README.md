@@ -2,7 +2,7 @@
 
 English | [简体中文](README.zh-CN.md)
 
-**Version: 0.1.0** · Apache-2.0 · `develop` for iteration / `main` for the stable baseline. See [Maintenance](references/maintenance.md).
+**Version: 0.1.1-dev.1** · Apache-2.0 · `develop` for iteration / `main` for the stable baseline. See [Maintenance](references/maintenance.md).
 
 A Codex skill for original animated storybooks: bring your own IP, approve the story and storyboard, then create complete poses, Doubao speech, bilingual captions, optional original music and a HyperFrames review copy. Animate the composition—not detached anatomy.
 

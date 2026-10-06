@@ -2,7 +2,7 @@
 
 [English](README.md) | 简体中文
 
-**版本：0.1.0** · Apache-2.0 · `develop` 迭代 / `main` 正式基线。版本与维护规则见 [维护指南](references/maintenance.md)。
+**版本：0.1.1-dev.1** · Apache-2.0 · `develop` 迭代 / `main` 正式基线。版本与维护规则见 [维护指南](references/maintenance.md)。
 
 一个在 Codex 中使用的动画绘本制作技能：从自己的 IP、故事和分镜到完整 pose 素材、豆包配音、双语字幕、原创配乐与 HyperFrames 成片。核心是编排画面、层次、镜头、声音和节奏，而非拆手脚让插画硬动起来。
 

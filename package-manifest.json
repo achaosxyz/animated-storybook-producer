@@ -1,14 +1,14 @@
 {
   "name": "animated-storybook-producer",
-  "version": "0.1.0",
+  "version": "0.1.1-dev.1",
   "license_status": "Apache-2.0 (original contributions; third-party terms retained)",
   "release_ready": false,
   "files": {
     ".gitignore": "cd60c9b08a50d4cc743940a4570f3ff21165b469a3a510beefa8d457d806ada1",
     "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
-    "README.md": "72d31ded5a2b75254085393db627f195cc747afe7015e204a1da47b1a35ce6ed",
-    "README.zh-CN.md": "2fb3b1ab45e9c44a027a3ee7f6a690aef589ec308efe60e1f44b651025cc8eea",
-    "SKILL.md": "7261a6317c062c5936fc428219d68023947b0761ae9a56f6d2cc737825fa1cc0",
+    "README.md": "ffd9ee9254115513742eae4a77d6f0f2a13a7d349229d9241ebb22ca99bb2ece",
+    "README.zh-CN.md": "e06fdd52a1e7af7dc06e51e97c2c7c2f7e475684d76f38edb4bf854a9a73d4f3",
+    "SKILL.md": "50254ee821cdbfaa64aac8cc5c342c1f99650e9aa2ac347661f15cdafd02d8bb",
     "assets/templates/brief.json": "ca7c5eeca3197584606974f2aae8ed04ce031b9ac8336246dfe6d331799fd4c5",
     "assets/templates/episode.json": "d382a5fc4b990654d90ad7a4ac2e2b156ada213538be3069d15fb075feb229bb",
     "assets/templates/ip-selection.json": "0a3b27053589f0240d7b502875261977f69d3446939341626bdfbccad48a64ec",
@@ -40,7 +40,7 @@
     "scripts/distribution/manifest.py": "3796dcf14d9310393f3bad5b681f63653ca6c171259a0376f6921d2562a1a062",
     "scripts/distribution/package.py": "d11f16a9f6266d218a4e4a0676b367ebe2a1fb29488826e5f2b4651ba0322462",
     "scripts/distribution/tests/test_distribution.py": "821bbfa88221a8de5cee34673f92e48fdf4ad2d36218e3902348eb74e842059b",
-    "scripts/producer.mjs": "ecd92acf4c5ed5b440258a5c517dfb207fdfbe0b76b5d1f578d5db7e32371a31",
+    "scripts/producer.mjs": "31f82089983f9a67a21888a73a5e1ad4b555e49bb875152599252f4f6a87d6d3",
     "scripts/python/audio.py": "b46a63234d1fe471edd87f85ca4cd7b4625ae36a2196b4596856d70d6a9ef8df",
     "scripts/python/oscillator.py": "3907f2c66ea14fcb69c98bc9a8db956afe71a858094aa3634a2dcb5c3aef5a72",
     "scripts/python/requirements.txt": "1157c625ce0ee97b595f6ff6fd0b0ca76e7275ad41112f19265ec2f829149932",
@@ -49,8 +49,8 @@
     "scripts/runtime/examples/backend-smoke/job.json": "2075ba5b53da35f30a2d2c8ef6dd93e580e4aa912a36ce3578e8ba097066bf3d",
     "scripts/runtime/examples/backend-smoke/tts-job.json": "f22692efd96de10f81efa8f8fe94df8ed191c047e65252174906d52d06be486a",
     "scripts/runtime/examples/backend-smoke/voice-job.json": "e1e9d60aeb5a2dba180c965388434d25d90b286715f3ad15e294d892b16adeb8",
-    "scripts/runtime/package-lock.json": "cda8f855356f253e01e69c84e9f5e0277f333bc4e10cfce54cc764a640541f76",
-    "scripts/runtime/package.json": "1157b1081b1f2564c6a99e59229691b9f2cd01dd7fed6b670de608f45fdebf13",
+    "scripts/runtime/package-lock.json": "325957fc203fae97310f70c8f352bd862a4371ac12ad24b0161e7c966a9d624a",
+    "scripts/runtime/package.json": "3ac6c2fc6c8b4e987d7723f9afab7828df2e5128856fb6e31df40eefb5f20674",
     "scripts/runtime/scripts/asr.mjs": "30faf0f7e7432323d43157d1cfbe009a213d0702e1c0bc25fd90e95aadeae9a1",
     "scripts/runtime/scripts/factory.mjs": "00e1d8434f6f0c4d00154d7d897434ff44df747d8ade315533b28809ba2fa53b",
     "scripts/runtime/scripts/ffmpeg-compat.mjs": "49023389e8c6400d8364a1dba9b719a36f64d30ec13ff95c228e45d60920d1d2",
@@ -82,7 +82,7 @@
     "scripts/runtime/tests/render-compat.test.mjs": "9c1026f80af345fa66e73e1fcbc073303f1fe5d61bd1ecb31860b89d6323da32",
     "scripts/runtime/tests/voice.test.mjs": "23a676b9c69b7e5dc5b3f9392a0a6ceb5bc449daa3cc860049cd332e634eeca7"
   },
-  "runtime_lock_sha256": "cda8f855356f253e01e69c84e9f5e0277f333bc4e10cfce54cc764a640541f76",
+  "runtime_lock_sha256": "325957fc203fae97310f70c8f352bd862a4371ac12ad24b0161e7c966a9d624a",
   "validated": {
     "status": "pending",
     "reason": "Source inventory changed; previous results do not certify this revision"

@@ -3,7 +3,7 @@ name: animated-storybook-producer
 description: Produce original animated storybooks in Codex from an original or user-supplied IP. Use for children's stories, storyboards, complete character poses, layered sprites, 2.5D scene direction, Doubao voice, bilingual captions, original music, HyperFrames rendering, or repairing and resuming these productions. Supports planning-only and stage-specific tasks without restarting the whole workflow.
 compatibility: Full production requires a Codex environment with an available image-generation tool, user-provided Doubao Speech TTS credentials, Node.js >=22, Python 3, FFmpeg/FFprobe and Chrome. ASR credentials are optional. Local runtime dependencies are installed explicitly from the bundled lockfile.
 metadata:
-  version: 0.1.0
+  version: 0.1.1-dev.1
 ---
 
 # Animated Storybook Producer
