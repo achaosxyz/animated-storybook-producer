@@ -32,7 +32,7 @@ VOLCENGINE_TTS_RESOURCE_ID=seed-tts-2.0
 VOLCENGINE_TTS_SPEAKER_NARRATOR=
 ```
 
-Add speaker variables matching your own TTS jobs. `tts check --job ...` reads local readiness only. Real `tts synthesize --allow-paid` requires authorization and provider access. Never assume a successful local check proves current voice availability or remote authentication. Optional ASR has its own API key/resource file; see [Voice](voice-subtitles.md).
+Add speaker variables matching your own TTS jobs. `tts check --job ...` reads local readiness only. Real `tts synthesize` requires provider access and task or trusted standing authorization; no separate payment opt-in is required. Never assume a successful local check proves current voice availability or remote authentication. Optional ASR has its own API key/resource file; see [Voice](voice-subtitles.md).
 
 Full production additionally needs actual Codex image generation. Verify it with the available host tools and follow their mandatory workflow, not a guessed CLI/API. Missing imagegen or TTS key blocks full-production readiness. Clearly scoped planning and offline edits can still proceed. Do not substitute silent output while calling the whole task complete.
 

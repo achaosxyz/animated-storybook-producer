@@ -4,7 +4,9 @@
 
 Use `develop` for iteration and `main` for the reviewed stable baseline. A branch name is not validation evidence or a published release. Normal submodule checkout is detached at the consumer's pinned commit; switch to `develop` explicitly before authorized maintenance. Do not overwrite local edits or move a consumer pin silently.
 
-The package version's source of truth is `package-manifest.json.version`. Mirror it in SKILL metadata, both README version labels, runtime package.json and the lockfile's root versions. Distribution refresh and packaging reject mismatches. Input schema versions and QA implementation versions are independent; do not bump them merely to match the package.
+The package version's source of truth is `package-manifest.json.version`. Mirror it in SKILL metadata, the English [README](../README.md), the [Simplified Chinese README](../README.zh-CN.md), runtime package.json and the lockfile's root versions. Keep the two READMEs equivalent in scope, requirements, installation and capability limits, with reciprocal language links. Distribution refresh and packaging reject version mismatches. Input schema versions and QA implementation versions are independent; do not bump them merely to match the package.
+
+Write skill Git commit messages in English Conventional Commit format: `type: English summary` or `type(scope): English summary`, for example `docs: split English and Chinese READMEs`. Use feat/fix/docs/refactor/test/chore/perf/build/ci/revert as appropriate. Consumer repositories choose their own commit language. Do not rewrite existing commits merely to change their language without explicit authorization.
 
 Use semantic versions: patch for compatible corrections, minor for compatible capability additions, major for incompatible public contracts. Iterations may use a prerelease such as `0.1.1-dev.1`; a stable candidate drops the prerelease only after its checks. Promote reviewed commits from `develop` to `main` only with explicit authorization. Tagging, pushing and public release are separate actions, not consequences of tests or a commit request. Never force-reset either branch to hide divergence.
 

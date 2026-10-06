@@ -6,7 +6,7 @@ Full production requires the user's Doubao Speech TTS API key. The implementatio
 
 Use `VOLCENGINE_TTS_API_KEY`, `VOLCENGINE_TTS_RESOURCE_ID` (supported default `seed-tts-2.0`) and caller-owned speaker mappings such as `VOLCENGINE_TTS_SPEAKER_NARRATOR`. Keep files private/ignored, preferably mode 600. Do not put values or secret hashes in run records. `tts check` performs local readiness checks, not remote authentication.
 
-TTS synthesis requires `--allow-paid` and real authorization. Preserve each response, audio hash, measured duration, request ID and native word timestamps. Unsupported direction/voice combinations fail before requests. Emotion/tone instructions belong in the provider's direction field, not spoken text. The implementation sends supported 2.0 direction as additions JSON; never promise all voices express every requested emotion.
+Run TTS synthesis directly within task authorization or trusted standing authorization; do not add a per-call payment prompt or CLI opt-in. A caller may authorize routine use of configured project TTS for its creative tasks; the skill does not infer that policy from credentials alone. Preserve each response, audio hash, measured duration, request ID and native word timestamps. Unsupported direction/voice combinations fail before requests. Emotion/tone instructions belong in the provider's direction field, not spoken text. The implementation sends supported 2.0 direction as additions JSON; never promise all voices express every requested emotion.
 
 ## Sound editing
 
@@ -28,7 +28,7 @@ A terminal colon used only to introduce a later thought can be omitted in the di
 
 ## ASR is separate
 
-Use `.env/volcengine-asr.env` or explicit `--env-file`; configure `VOLCENGINE_ASR_API_KEY` and a supported streaming resource such as `volc.seedasr.sauc.duration`. No TTS-key fallback. Local audio validation/decoding is not recognition. `asr recognize --allow-paid` uploads the explicitly selected local audio to the configured provider.
+Use `.env/volcengine-asr.env` or explicit `--env-file`; configure `VOLCENGINE_ASR_API_KEY` and a supported streaming resource such as `volc.seedasr.sauc.duration`. No TTS-key fallback. Local audio validation/decoding is not recognition. `asr recognize` uploads the explicitly selected local audio to the configured provider within its own task or standing authorization; a TTS-only policy does not grant ASR upload scope.
 
 The adapter streams decoded mono 16kHz PCM in paced packets, keeps only a complete final result and does not follow redirects with credentials. Unknown speakers remain null; missing words remain absent, not invented. ASR supports transcription/checking, not automatic replacement of reliable native TTS timestamps or automatic speaker identity. Network failures retain failed evidence and do not trigger blind retries.
 

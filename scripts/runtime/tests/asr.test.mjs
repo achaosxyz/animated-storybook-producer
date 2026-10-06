@@ -109,27 +109,28 @@ test('ASR input metadata validation rejects nonaudio data without leaking its co
   const { root, audio } = await audioFixture(t); assert.equal(audio.durationMs, 1000); const fake = path.join(root, 'fake.wav'); await writeFile(fake, 'fixture-secret-content');
   await assert.rejects(prepareAsrAudio(fake), e => e.code === 'INVALID_ASR_AUDIO' && !e.message.includes('fixture-secret-content'));
 });
-test('ASR paid/missing-config/source-change guards block upload and output', async (t) => {
-  const { root, file, audio } = await audioFixture(t); let calls = 0; const provider = getAsrProvider(), c = await config(), opts = { allowPaid: true, fixture: true, webSocketFactory: wsFixture(() => calls++) };
-  await assert.rejects(runAsr(provider, c, audio, path.join(root, 'run'), { ...opts, allowPaid: false }), { code: 'PAID_RECOGNITION_NOT_AUTHORIZED' });
+test('ASR missing-config/source-change guards block upload and output', async (t) => {
+  const { root, file, audio } = await audioFixture(t); let calls = 0; const provider = getAsrProvider(), c = await config(), opts = { fixture: true, webSocketFactory: wsFixture(() => calls++) };
   await assert.rejects(runAsr(provider, await loadAsrConfig('/nonexistent/asr-fixture.env', {}), audio, path.join(root, 'run'), opts), { code: 'MISSING_CONFIG' });
   await writeFile(file, pcmWave(Buffer.alloc(24000 * 2, 1))); await assert.rejects(runAsr(provider, c, audio, path.join(root, 'run'), opts), { code: 'STALE_ASR_AUDIO' });
   assert.equal(calls, 0); await assert.rejects(access(path.join(root, 'run')));
 });
 test('ASR mock run creates JSON/text/SRT/VTT with pending review, no overwrite or auto attach', async (t) => {
   const { root, audio } = await audioFixture(t); const out = path.join(root, 'run'); let calls = 0;
-  const opts = { allowPaid: true, fixture: true, webSocketFactory: wsFixture(() => calls++) }, provider = getAsrProvider(), c = await config();
+  const opts = { fixture: true, webSocketFactory: wsFixture(() => calls++) }, provider = getAsrProvider(), c = await config();
   const r = await runAsr(provider, c, audio, out, opts); assert.equal(r.manifest.status, 'completed'); assert.equal(r.manifest.live_provider_call, false); assert.equal(r.manifest.character_speaker_mapping, null); assert.equal(calls, 1);
   assert.match(await readFile(path.join(out, 'subtitles.srt'), 'utf8'), /00:00:00,100 --> 00:00:00,700/); assert.equal(JSON.parse(await readFile(path.join(out, 'transcript.json'))).transcript_review, 'pending');
   await assert.rejects(runAsr(provider, c, audio, out, opts), { code: 'EEXIST' }); assert.equal(calls, 1);
 });
 test('ASR failed results retain request evidence and never fake a transcript', async (t) => {
   const { root, audio } = await audioFixture(t); const out = path.join(root, 'run');
-  await assert.rejects(runAsr(getAsrProvider(), await config(), audio, out, { allowPaid: true, fixture: true, webSocketFactory: wsFixture(() => {}, { result: { text: '缺时间戳' } }) }), { code: 'TIMESTAMPS_MISSING' });
+  await assert.rejects(runAsr(getAsrProvider(), await config(), audio, out, { fixture: true, webSocketFactory: wsFixture(() => {}, { result: { text: '缺时间戳' } }) }), { code: 'TIMESTAMPS_MISSING' });
   assert.equal(JSON.parse(await readFile(path.join(out, 'manifest.json'))).status, 'failed'); await assert.rejects(access(path.join(out, 'subtitles.srt')));
 });
 test('ASR provider/CLI rejects unsupported adapters and secret-bearing or duplicate args', () => {
   assert.throws(() => getAsrProvider('missing'), { code: 'UNSUPPORTED_ASR_PROVIDER' }); assert.equal(parseAsrArgs(['check']).action, 'check');
+  assert.equal(parseAsrArgs(['recognize','--audio','source.wav','--out','new']).action, 'recognize');
+  assert.throws(() => parseAsrArgs(['recognize','--audio','source.wav','--out','new','--allow-paid']));
   for (const args of [['recognize'], ['providers', '--env', 'x'], ['check', '--allow-paid'], ['check', '--audio', 'a', '--audio', 'b'], ['check', '--key', 'do-not-echo']]) assert.throws(() => parseAsrArgs(args), e => !e.message.includes('do-not-echo'));
 });
 
@@ -140,7 +141,7 @@ test('ASR transcript/utterance/word disagreements block misleading cues', () => 
 test('ASR rejects known credentials embedded in audio before upload', async (t) => {
   const { root, file } = await audioFixture(t); const c = await config(); const pcm = Buffer.alloc(24000 * 2); Buffer.from(c.apiKey).copy(pcm, 100);
   await writeFile(file, pcmWave(pcm)); const audio = await prepareAsrAudio(file); let calls = 0;
-  await assert.rejects(runAsr(getAsrProvider(), c, audio, path.join(root, 'run'), { allowPaid: true, fixture: true, webSocketFactory: wsFixture(() => calls++) }), { code: 'SECRET_IN_AUDIO' }); assert.equal(calls, 0);
+  await assert.rejects(runAsr(getAsrProvider(), c, audio, path.join(root, 'run'), { fixture: true, webSocketFactory: wsFixture(() => calls++) }), { code: 'SECRET_IN_AUDIO' }); assert.equal(calls, 0);
 });
 
 test('ASR check normalizes WAV/MP3/OGG locally and records reproducible PCM hashes', async (t) => {
@@ -161,10 +162,9 @@ test('ASR check normalizes WAV/MP3/OGG locally and records reproducible PCM hash
 
 test('ASR fixture and normalized-source guards cannot fall through to real networking', async (t) => {
   const { root, audio } = await audioFixture(t); const c = await config(); let calls = 0;
-  await assert.rejects(runAsr(getAsrProvider(), c, audio, path.join(root, 'run'), { fixture: true, allowPaid: true }), { code: 'INVALID_TEST_TRANSPORT' });
+  await assert.rejects(runAsr(getAsrProvider(), c, audio, path.join(root, 'run'), { fixture: true }), { code: 'INVALID_TEST_TRANSPORT' });
   audio.streamBytes[0] ^= 1;
-  await assert.rejects(runAsr(getAsrProvider(), c, audio, path.join(root, 'run'), { fixture: true, allowPaid: true,
-    webSocketFactory: wsFixture(() => calls++) }), { code: 'STALE_ASR_AUDIO' });
+  await assert.rejects(runAsr(getAsrProvider(), c, audio, path.join(root, 'run'), { fixture: true, webSocketFactory: wsFixture(() => calls++) }), { code: 'STALE_ASR_AUDIO' });
   assert.equal(calls, 0); await assert.rejects(access(path.join(root, 'run')));
 });
 
@@ -201,7 +201,7 @@ test('ASR aborts sender and preserves failed manifest on disconnect after partia
     socket = s; sent++;
     if (p.type === 2) queueMicrotask(() => { s.emit('message', responsePacket({ result: { text: '只有中间结果' } }), true); s.emit('close'); });
   });
-  await assert.rejects(runAsr(getAsrProvider(), c, audio, out, { allowPaid: true, fixture: true, webSocketFactory: factory }), { code: 'ASR_NETWORK' });
+  await assert.rejects(runAsr(getAsrProvider(), c, audio, out, { fixture: true, webSocketFactory: factory }), { code: 'ASR_NETWORK' });
   const manifest = JSON.parse(await readFile(path.join(out, 'manifest.json')));
   assert.equal(manifest.status, 'failed'); assert.ok(manifest.request_id); assert.equal(manifest.input.stream_sha256, audio.streamSha256);
   assert.equal(socket.terminated, true); assert.equal(sent, 2); await assert.rejects(access(path.join(out, 'transcript.json')));

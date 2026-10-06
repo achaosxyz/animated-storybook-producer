@@ -9,9 +9,9 @@ import { attachVoice } from '../src/voice-attach.mjs';
 const EXAMPLE = fileURLToPath(new URL('../examples/backend-smoke/voice-job.json', import.meta.url));
 export function parseVoiceArgs(args) {
   return parseSpeechArgs(args, { check: { allowed: ['job', 'env'] },
-    synthesize: { allowed: ['job', 'env', 'out', 'allow-paid'], required: ['out'] },
+    synthesize: { allowed: ['job', 'env', 'out'], required: ['out'] },
     attach: { allowed: ['job', 'run', 'out', 'font'], required: ['job', 'run', 'out'] } },
-    { job: { type: 'string' }, env: { type: 'string' }, out: { type: 'string' }, run: { type: 'string' }, font: { type: 'string' }, 'allow-paid': { type: 'boolean' } },
+    { job: { type: 'string' }, env: { type: 'string' }, out: { type: 'string' }, run: { type: 'string' }, font: { type: 'string' } },
     { job: EXAMPLE, env: DEFAULT_VOICE_ENV });
 }
 
@@ -35,7 +35,7 @@ export async function main(args = process.argv.slice(2)) {
     if (!ready.ready) process.exitCode = 2;
     return;
   }
-  const result = await synthesizeVoice(prepared, config, path.resolve(values.out), { allowPaid: values['allow-paid'] === true });
+  const result = await synthesizeVoice(prepared, config, path.resolve(values.out));
   console.log(JSON.stringify({ status: result.manifest.status, out: result.out, id: result.manifest.id,
     artifact_version: result.manifest.artifact_version, utterances: result.manifest.utterances.length,
     duration_ms: result.manifest.duration_ms, voice_listening_review: 'pending', canonical_version: null, gate_c: null }));

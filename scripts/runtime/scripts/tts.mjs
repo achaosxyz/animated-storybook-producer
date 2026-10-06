@@ -7,8 +7,8 @@ import { listTtsProviders, prepareTtsJob, validateSpeechRequest, runTtsJob } fro
 const EXAMPLE = fileURLToPath(new URL('../examples/backend-smoke/tts-job.json', import.meta.url));
 export function parseTtsArgs(args) {
   return parseSpeechArgs(args, { providers: { allowed: [] }, check: { allowed: ['job', 'env'] },
-    synthesize: { allowed: ['job', 'env', 'out', 'allow-paid'], required: ['out'] } },
-    { job: { type: 'string' }, env: { type: 'string' }, out: { type: 'string' }, 'allow-paid': { type: 'boolean' } },
+    synthesize: { allowed: ['job', 'env', 'out'], required: ['out'] } },
+    { job: { type: 'string' }, env: { type: 'string' }, out: { type: 'string' } },
     { job: EXAMPLE, env: DEFAULT_VOICE_ENV });
 }
 
@@ -26,7 +26,7 @@ export async function main(args = process.argv.slice(2)) {
     if (!ready.ready) process.exitCode = 2;
     return;
   }
-  const result = await runTtsJob(prepared, config, path.resolve(values.out), { allowPaid: values['allow-paid'] === true });
+  const result = await runTtsJob(prepared, config, path.resolve(values.out));
   console.log(JSON.stringify({ status: result.manifest.status, provider: prepared.provider.id, out: result.out,
     duration_ms: result.manifest.duration_ms, audio_review: 'pending' }));
 }

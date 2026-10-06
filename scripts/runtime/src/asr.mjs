@@ -49,10 +49,9 @@ export async function prepareAsrAudio(file) {
   return { audioPath, format, bytes, sha256: hash(bytes), sourceDurationMs: Math.floor(duration * 1000),
     durationMs: Math.floor(streamBytes.length / 32), streamBytes, streamSha256: hash(streamBytes), streamFormat: 'pcm', sampleRate: 16000 };
 }
-export async function runAsr(provider, config, audio, out, { allowPaid = false, webSocketFactory, fixture = false } = {}) {
+export async function runAsr(provider, config, audio, out, { webSocketFactory, fixture = false } = {}) {
   const ready = provider.readiness(config);
   if (!ready.ready) fail('MISSING_CONFIG', `请配置 ${ready.missing.join('、')}；未发送识别请求`);
-  if (!allowPaid) fail('PAID_RECOGNITION_NOT_AUTHORIZED', '实际识别和音频上传需要显式 --allow-paid');
   if (config.apiKey && audio.bytes.includes(Buffer.from(config.apiKey))) fail('SECRET_IN_AUDIO', '音频文件包含鉴权值，拒绝上传');
   if (fixture && typeof webSocketFactory !== 'function') fail('INVALID_TEST_TRANSPORT', 'ASR 测试必须注入 WebSocket transport，不调用真实服务');
   if (hash(await readFile(audio.audioPath)) !== audio.sha256 || hash(audio.bytes) !== audio.sha256
