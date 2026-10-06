@@ -6,8 +6,9 @@
   "files": {
     ".gitignore": "cd60c9b08a50d4cc743940a4570f3ff21165b469a3a510beefa8d457d806ada1",
     "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
-    "README.md": "a1e3ef0d49da37ae931e4a75bbd9374347f4d02b5d7a4732d0977e491015e3e5",
-    "SKILL.md": "0f85a0cb791e4b368620e309a02fbea4811e5ead1358ddeb2bf1ed2eb99f6862",
+    "README.md": "72d31ded5a2b75254085393db627f195cc747afe7015e204a1da47b1a35ce6ed",
+    "README.zh-CN.md": "2fb3b1ab45e9c44a027a3ee7f6a690aef589ec308efe60e1f44b651025cc8eea",
+    "SKILL.md": "73ac2c69e285489e62af0bb92b64dc4466d92e19b7946864479095bcd0d3b3fa",
     "assets/templates/brief.json": "ca7c5eeca3197584606974f2aae8ed04ce031b9ac8336246dfe6d331799fd4c5",
     "assets/templates/episode.json": "d382a5fc4b990654d90ad7a4ac2e2b156ada213538be3069d15fb075feb229bb",
     "assets/templates/ip-selection.json": "0a3b27053589f0240d7b502875261977f69d3446939341626bdfbccad48a64ec",
@@ -29,16 +30,16 @@
     "references/directing.md": "c5a0f01f6f91a69171f00dc22f2862ffed84b0d4e684ed2f0ff2966bd95ed583",
     "references/getting-started.md": "6a17707085d9324181282f049e242082a05676869dfae2824d23e192fc53341e",
     "references/image-generation.md": "8b958c7a1057229b8c78b3bfffef8110b124084f2c06c50157d09bc80eebda10",
-    "references/maintenance.md": "0d06b588b44fd4708f419a3c25c5d14f90a3526bdd1ab4d252a2f5fb38b046e1",
+    "references/maintenance.md": "a4ce2d46834a34ae9ca9161b1cb6f03ec372722d61d06d86ec8a3d478edce4ca",
     "references/music.md": "6e8ee99216f3d81b4e15dac68094c0f3abc4f388229fee819d86d73d1314fc3b",
     "references/provenance.md": "64d91ff58cc7f6e2fb510728728b91f6954aed40a438600bd16e59ee6dca6a43",
     "references/qa-repair.md": "25578da1ed57066b1543a77131dd27f8a3df4aee78cc8763429af11986e60f0f",
     "references/story.md": "27eafa06d7ee30a194e2b53c18206ea0e13c521a280a439684b15dbacd69a7f3",
     "references/visual-assets.md": "5a8418dcc92453a447db66add528210c2247d2264ccb44728a4a9ac8ae02b83f",
     "references/voice-subtitles.md": "08b07a51b3718a8a0e8b205f49fdc4dc8dad3e9021642105bd9fe73c97e5431f",
-    "scripts/distribution/manifest.py": "101b865d90acd80214843f5750d582167bc7336f5a535923fae73e9bda4f4a9c",
+    "scripts/distribution/manifest.py": "3796dcf14d9310393f3bad5b681f63653ca6c171259a0376f6921d2562a1a062",
     "scripts/distribution/package.py": "d11f16a9f6266d218a4e4a0676b367ebe2a1fb29488826e5f2b4651ba0322462",
-    "scripts/distribution/tests/test_distribution.py": "1af5774001e1e07cb1e3071c7aa366defa662d8b4348b6eaa0a7ac7374c02b50",
+    "scripts/distribution/tests/test_distribution.py": "821bbfa88221a8de5cee34673f92e48fdf4ad2d36218e3902348eb74e842059b",
     "scripts/producer.mjs": "0b195fbaf6c1454e3299f356d460ab82a80d892ceb286fdef52039749a91341d",
     "scripts/python/audio.py": "b46a63234d1fe471edd87f85ca4cd7b4625ae36a2196b4596856d70d6a9ef8df",
     "scripts/python/oscillator.py": "3907f2c66ea14fcb69c98bc9a8db956afe71a858094aa3634a2dcb5c3aef5a72",
@@ -83,36 +84,8 @@
   },
   "runtime_lock_sha256": "cda8f855356f253e01e69c84e9f5e0277f333bc4e10cfce54cc764a640541f76",
   "validated": {
-    "status": "passed_for_declared_scope",
-    "package_version": "0.1.0",
-    "source_inventory_sha256": "85e4a16b694659b00a47e361f13d334591e6a097248dabe0708e5122b7bd6d62",
-    "checks": {
-      "runtime_tests": 89,
-      "distribution_tests": 6,
-      "consumer_tests": 38,
-      "isolated_runtime_tests": 89,
-      "isolated_distribution_tests": 6,
-      "offline_dependency_install": "passed",
-      "build_render_sample_encoded_playback_delivery": "passed",
-      "viewer_states": "visually_inspected",
-      "encoded_frames_inspected": [
-        1,
-        4
-      ]
-    },
-    "fixture": {
-      "duration_seconds": 4,
-      "fps": 30,
-      "frames": 120,
-      "video_sha256": "2f8a2039d2dd380210d1b7f518882372ea3370cbf6aec03414677b8dfa3c332e"
-    },
-    "limits": [
-      "Neutral technical fixture, not a whole-story quality benchmark",
-      "No paid imagegen, live TTS/ASR or listening performed",
-      "User approval remains pending",
-      "Remote installation and public release not tested"
-    ],
-    "validation_reuse": "Integration and isolated test results precede whitespace-only cleanup of the oscillator EOF and upstream license line; source tests repeated after cleanup. No runtime behavior changed."
+    "status": "pending",
+    "reason": "Source inventory changed; previous results do not certify this revision"
   },
   "limits": [
     "No automatic user approval or publishing",

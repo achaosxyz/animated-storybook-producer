@@ -6,7 +6,7 @@ import re
 from pathlib import Path
 
 EXCLUDED = {'node_modules', '__pycache__', '.git', '.hyperframes', 'vendor', '.venv', '.mar', '.build'}
-ROOT_FILES = {'SKILL.md', 'README.md', 'LICENSE', '.gitignore'}
+ROOT_FILES = {'SKILL.md', 'README.md', 'README.zh-CN.md', 'LICENSE', '.gitignore'}
 ROOT_DIRS = {'references', 'scripts', 'assets', 'licenses', 'evals'}
 EXTENSIONS = {'.md', '.json', '.mjs', '.py', '.txt', '.html', '.template'}
 
@@ -22,7 +22,8 @@ def check_versions(root, manifest):
     if any(v != version for v in (runtime.get('version'), lock.get('version'), lock.get('packages', {}).get('', {}).get('version'))):
         raise ValueError('Runtime version differs from package manifest')
     readme = (root / 'README.md').read_text()
-    if f'**Version: {version}**' not in readme or f'**版本：{version}**' not in readme:
+    chinese_readme = (root / 'README.zh-CN.md').read_text()
+    if f'**Version: {version}**' not in readme or f'**版本：{version}**' not in chinese_readme:
         raise ValueError('README version differs from package manifest')
 
 def inventory(root):

@@ -18,7 +18,8 @@ class DistributionTests(unittest.TestCase):
         for name in manifest.ROOT_FILES:
             (self.root / name).write_text('fixture')
         (self.root / 'SKILL.md').write_text('---\nname: animated-storybook-producer\ndescription: Test fixture\nmetadata:\n  version: 0.1.0\n---\n')
-        (self.root / 'README.md').write_text('**Version: 0.1.0**\n**版本：0.1.0**\n')
+        (self.root / 'README.md').write_text('**Version: 0.1.0**\n')
+        (self.root / 'README.zh-CN.md').write_text('**版本：0.1.0**\n')
         runtime = self.root / 'scripts/runtime'
         runtime.mkdir(parents=True)
         (runtime / 'package.json').write_text(json.dumps({'version': '0.1.0'}))
@@ -37,7 +38,7 @@ class DistributionTests(unittest.TestCase):
 
     def test_version_drift_blocks_refresh_and_package(self):
         manifest.refresh(self.root)
-        for name in ['SKILL.md', 'README.md', 'scripts/runtime/package.json', 'scripts/runtime/package-lock.json']:
+        for name in ['SKILL.md', 'README.md', 'README.zh-CN.md', 'scripts/runtime/package.json', 'scripts/runtime/package-lock.json']:
             p = self.root / name
             original = p.read_text()
             p.write_text(original.replace('0.1.0', '0.2.0'))
