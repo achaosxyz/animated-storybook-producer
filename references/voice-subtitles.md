@@ -35,3 +35,14 @@ The adapter streams decoded mono 16kHz PCM in paced packets, keeps only a comple
 ## Acceptance
 
 Separate local readiness, actual provider response, decoded signal checks, transcript review, listening, mix judgment and user approval. Measure duration, clipping, loudness/peaks and source alignment; these do not establish pleasant voice, believable emotion or music balance. Without listening, record `not_performed`. No bundled credentials, paid smoke requests or inherited account assumptions.
+
+## Provider protocol references
+
+These describe provider protocols, not proof that an account or voice is authorized or live-tested in this installation.
+
+```text
+Doubao TTS: https://docs.volcengine.com/docs/DoubaoVoice/unidirectional-streaming-text-to-speech-http?lang=zh
+Voice catalogue: https://docs.volcengine.com/docs/DoubaoVoice/Tonelist-1
+API key model: https://docs.volcengine.com/docs/DoubaoVoice/APIKeyUsage?lang=zh
+Doubao streaming ASR: https://docs.volcengine.com/docs/DoubaoVoice/bidirectional-streaming-automatic-speech-recognition-websocket?lang=zh
+```

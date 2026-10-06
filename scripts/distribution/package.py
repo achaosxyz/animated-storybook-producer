@@ -1,4 +1,4 @@
-"""Create a local whitelist archive; never publish or choose a license."""
+"""Create a local whitelist archive; never publish."""
 import argparse, hashlib, json, re, tarfile
 from pathlib import Path
 from manifest import check_versions, inventory
@@ -27,5 +27,5 @@ def main():
     o.parent.mkdir(parents=True,exist_ok=True)
     with tarfile.open(o,'x:gz') as t:
         for n in sorted([*m['files'],'package-manifest.json']): t.add(r/n,arcname=r.name+'/'+n,recursive=False)
-    print(json.dumps({'status':'local-archive','path':str(o),'files':len(m['files'])+1,'release_ready':False,'license':m['license_status']}))
+    print(json.dumps({'status':'local-archive','path':str(o),'files':len(m['files'])+1,'release_ready':False}))
 if __name__=='__main__':main()
