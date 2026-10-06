@@ -3,7 +3,7 @@ name: animated-storybook-producer
 description: Produce original animated storybooks in Codex from an original or user-supplied IP. Use for children's stories, storyboards, complete character poses, layered sprites, 2.5D scene direction, Doubao voice, bilingual captions, original music, HyperFrames rendering, or repairing and resuming these productions. Supports planning-only and stage-specific tasks without restarting the whole workflow.
 compatibility: Full production requires a Codex environment with an available image-generation tool, user-provided Doubao Speech TTS credentials, Node.js >=22, Python 3, FFmpeg/FFprobe and Chrome. ASR credentials are optional. Local runtime dependencies are installed explicitly from the bundled lockfile.
 metadata:
-  version: 0.1.1-dev.1
+  version: 0.1.1
 ---
 
 # Animated Storybook Producer
@@ -30,7 +30,7 @@ Read the user's brief and current project state. Identify the requested output, 
 | Defect, review or repair | [QA and repair](references/qa-repair.md) | Only the layer implicated by evidence |
 | Resume or provide a link again | Current state and run evidence | The next unfinished stage only |
 
-Look up fields in [Contracts](references/contracts.md), commands in [CLI](references/cli.md), and source attribution in [Provenance](references/provenance.md). Do not preload all references or inspect every script for a narrow task.
+Look up fields in [Contracts](references/contracts.md) and commands in [CLI](references/cli.md). Do not preload all references or inspect every script for a narrow task.
 
 ## Environment and authority
 
@@ -106,4 +106,4 @@ A technically playable review copy may be delivered with clearly stated pending 
 
 ## Boundaries
 
-The bundled runtime supports technical validation and explicitly scoped exploration. It does not grant production approval, run an autonomous studio, perform semantic visual judgment or prove originality/legal clearance. Original package contributions use [Apache-2.0](LICENSE); preserve third-party attribution and terms. Licensing is not authorization for an agent to publish. Platform/provider validation boundaries live in the package manifest and run evidence, not in marketing claims.
+The bundled runtime supports technical validation and explicitly scoped exploration. It does not grant production approval, run an autonomous studio, perform semantic visual judgment or prove originality/legal clearance. Publication requires explicit authorization. Platform/provider validation boundaries live in the package manifest and run evidence, not in marketing claims.

@@ -39,7 +39,7 @@ export function parse(argv) {
 }
 export async function main(argv) {
   if (argv.length === 1 && ['--help','-h'].includes(argv[0])) {
-    console.log('animated-storybook-producer 0.1.1-dev.1\nAll commands require --workspace PATH. Paths resolve from the calling cwd. Outputs must be new directories.\n' + Object.entries(actions).map(([k,v]) => `${k}: ${v.map(x=>'--'+x+' VALUE').join(' ')}`).join('\n') + '\nSee references/cli.md for required arguments and input contracts.'); return;
+    console.log('animated-storybook-producer 0.1.1\nAll commands require --workspace PATH. Paths resolve from the calling cwd. Outputs must be new directories.\n' + Object.entries(actions).map(([k,v]) => `${k}: ${v.map(x=>'--'+x+' VALUE').join(' ')}`).join('\n') + '\nSee references/cli.md for required arguments and input contracts.'); return;
   }
   const { action, opts } = parse(argv); opts.workspace = await realpath(opts.workspace);
   process.env.STORYBOOK_WORKSPACE = opts.workspace;

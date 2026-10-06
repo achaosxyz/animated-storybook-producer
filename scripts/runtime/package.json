@@ -1,6 +1,6 @@
 {
   "name": "animated-storybook-runtime",
-  "version": "0.1.1-dev.1",
+  "version": "0.1.1",
   "private": true,
   "type": "module",
   "engines": {
@@ -27,6 +27,5 @@
     "hyperframes": "0.8.118",
     "ws": "8.22.0",
     "puppeteer-core": "25.10.0"
-  },
-  "license": "Apache-2.0"
+  }
 }

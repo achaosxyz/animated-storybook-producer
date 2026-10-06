@@ -48,10 +48,4 @@ For a no-key technical rehearsal, use the neutral [CLI smoke path](cli.md). Its 
 
 ## Share without leaking
 
-The local distribution script packages only enumerated public files from package-manifest.json and validates their hashes. No node_modules, cache, environment files, generated media or user project should enter the archive. Retain licenses/provenance. Original contributions use Apache-2.0; third-party terms remain applicable. Agent publication still requires explicit authorization. No upload/push command is part of the tool.
-
-## Maintaining the package
-
-After a deliberate source edit, run `python3 scripts/distribution/manifest.py --root <skill-directory>`. It inventories the public files and resets validation metadata when sources changed; it does not run tests or infer release readiness. Run runtime tests, the affected integration/behavior checks, and document actual coverage before updating validation evidence. Then use `scripts/distribution/package.py --root <skill-directory> --out <new-archive.tar.gz>` for a local archive. Keep run-specific evidence outside the package; never carry a passed claim across changed source hashes.
-
-For branches, version consistency and standalone maintainer tests, see [Maintenance](maintenance.md).
+The local distribution script packages only enumerated public files from package-manifest.json and validates their hashes. No node_modules, cache, environment files, generated media or user project should enter the archive. Agent publication still requires explicit authorization. No upload/push command is part of the tool.

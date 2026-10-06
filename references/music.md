@@ -22,4 +22,4 @@ Use voice-aware gain automation in the mixing layer, preserving voice/music/effe
 
 Check full decoding, exact duration/sample count, clipping, tails, stem reconstruction and mono compatibility. A naturally ending cue is not automatically a seamless loop; verify loop seam separately. Record listening and picture-fit review independently from signal checks.
 
-Original composition records establish process, not global similarity search or legal clearance. Preserve source/license attribution for any material actually adopted. Do not download music or samples when the user requested original local work. A standalone music task does not authorize rewriting speech or replacing the current film.
+Original composition records establish process, not global similarity search or legal clearance. Do not download music or samples when the user requested original local work. A standalone music task does not authorize rewriting speech or replacing the current film.
