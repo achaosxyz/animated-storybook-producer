@@ -10,7 +10,10 @@ import { execute } from '../src/producer-operations.mjs';
 
 test('public CLI requires explicit workspace/out/job and rejects unknown duplicate flags',()=>{
  for(const args of [['render'],['build','--workspace','/tmp'],['inspect','--workspace','/tmp','--workspace','/tmp'],['inspect','--workspace','/tmp','--key','secret'],['tts','check','--workspace','/tmp']]) assert.throws(()=>parse(args));
- assert.equal(parse(['tts','synthesize','--workspace','/tmp','--job','voice.json','--out','new','--allow-paid']).opts['allow-paid'],true);
+ assert.equal(parse(['tts','synthesize','--workspace','/tmp','--job','voice.json','--out','new']).action,'tts synthesize');
+ assert.equal(parse(['asr','recognize','--workspace','/tmp','--audio','voice.wav','--out','new']).action,'asr recognize');
+ assert.throws(()=>parse(['tts','synthesize','--workspace','/tmp','--job','voice.json','--out','new','--allow-paid']));
+ assert.throws(()=>parse(['asr','recognize','--workspace','/tmp','--audio','voice.wav','--out','new','--allow-paid']));
  assert.equal(parse(['inspect','--workspace','.']).opts.workspace,process.cwd());
 });
 test('workspace boundary rejects symlink escapes and existing outputs',async()=>{

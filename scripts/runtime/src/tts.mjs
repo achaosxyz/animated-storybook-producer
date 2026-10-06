@@ -36,9 +36,8 @@ export function validateSpeechRequest(provider, config, input) {
 
 // Shared lifecycle: one paid call, source retention, real PCM duration and
 // provider-owned normalization to millisecond word timings. No scene dependency.
-export async function synthesizeSpeech(provider, config, input, fileBase, { allowPaid = false, requestId = randomUUID(), fetchImpl, onAudioReceived, metadataFile = `${fileBase}-response.json` } = {}) {
+export async function synthesizeSpeech(provider, config, input, fileBase, { requestId = randomUUID(), fetchImpl, onAudioReceived, metadataFile = `${fileBase}-response.json` } = {}) {
   validateSpeechRequest(provider, config, input);
-  if (!allowPaid) fail('PAID_SYNTHESIS_NOT_AUTHORIZED', '实际合成需要显式 --allow-paid；检查不会请求服务');
   if (!['mp3', 'wav'].includes(provider.audioFormat)) fail('UNSUPPORTED_AUDIO_FORMAT', 'provider 的源音频格式未接入');
   const response = await provider.synthesize(config, input, { requestId, fetchImpl });
   const original = `${fileBase}.${provider.audioFormat === 'wav' ? 'source.wav' : 'mp3'}`, normalized = `${fileBase}.wav`;
@@ -67,9 +66,8 @@ export async function prepareTtsJob(file) {
     input: { text: job.text, speakerEnv: job.speaker_env, voice_direction: job.voice_direction } };
 }
 
-export async function runTtsJob(prepared, config, out, { allowPaid = false, fetchImpl, fixture = false } = {}) {
+export async function runTtsJob(prepared, config, out, { fetchImpl, fixture = false } = {}) {
   validateSpeechRequest(prepared.provider, config, prepared.input);
-  if (!allowPaid) fail('PAID_SYNTHESIS_NOT_AUTHORIZED', '实际合成需要显式 --allow-paid');
   if (fixture && typeof fetchImpl !== 'function') fail('INVALID_TEST_TRANSPORT', '测试夹具必须注入 transport，不得调用真实服务');
   if (hash(await readFile(prepared.jobPath)) !== prepared.jobSha256) fail('STALE_TTS_JOB', 'TTS 输入已改变，未发送请求');
   const output = path.resolve(out);
@@ -85,7 +83,7 @@ export async function runTtsJob(prepared, config, out, { allowPaid = false, fetc
   await save();
   try {
     const result = await synthesizeSpeech(prepared.provider, config, prepared.input, path.join(output, 'speech'), {
-      allowPaid, requestId: manifest.request_id, fetchImpl,
+      requestId: manifest.request_id, fetchImpl,
       onAudioReceived: async (r) => { manifest.status = 'audio_received'; manifest.source_sha256 = r.sourceSha256; await save(); },
     });
     manifest.duration_ms = result.durationMs; manifest.sample_rate = 24000;

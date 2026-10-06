@@ -226,12 +226,11 @@ test('voice render reference cannot follow a symlink outside its job directory',
   await writeFile(path.join(source, 'escape-voice.json'), JSON.stringify({ ...voiceJob(), render_job: 'escape.json' }));
   await assert.rejects(prepareVoiceJob(path.join(source, 'escape-voice.json')), { code: 'SYMLINK_ESCAPE' });
 });
-test('paid synthesis requires explicit opt-in and missing config creates no output or calls', async (t) => {
+test('missing synthesis config creates no output or calls', async (t) => {
   const { root, prepared } = await project(t); let calls = 0;
   const options = { fetchImpl: responseFetch(() => { calls += 1; }), fixture: true };
-  await assert.rejects(synthesizeVoice(prepared, await config(), path.join(root, 'run'), options), { code: 'PAID_SYNTHESIS_NOT_AUTHORIZED' });
   const empty = await loadVoiceConfig(path.join(fixtureRoot, 'absent.env'), {});
-  await assert.rejects(synthesizeVoice(prepared, empty, path.join(root, 'run'), { ...options, allowPaid: true }), { code: 'MISSING_CONFIG' });
+  await assert.rejects(synthesizeVoice(prepared, empty, path.join(root, 'run'), options), { code: 'MISSING_CONFIG' });
   assert.equal(calls, 0); await assert.rejects(access(path.join(root, 'run')));
 });
 test('WAV assembly measures actual PCM samples and rejects malformed audio', () => {
@@ -241,7 +240,7 @@ test('WAV assembly measures actual PCM samples and rejects malformed audio', () 
 });
 test('mocked full worker produces exact-duration audio and real fixture timestamps with no secrets or overwrite', async (t) => {
   const { root, prepared } = await project(t); let calls = 0;
-  const c = await config(), out = path.join(root, 'run'); const options = { allowPaid: true, fixture: true, fetchImpl: responseFetch(() => { calls += 1; }) };
+  const c = await config(), out = path.join(root, 'run'); const options = { fixture: true, fetchImpl: responseFetch(() => { calls += 1; }) };
   const result = await synthesizeVoice(prepared, c, out, options);
   assert.equal(result.manifest.status, 'completed'); assert.equal(result.manifest.live_provider_call, false); assert.equal(calls, 1);
   assert.equal(readPcmWave(await readFile(path.join(out, 'audio/track.wav'))).durationMs, 4000);
@@ -252,25 +251,25 @@ test('mocked full worker produces exact-duration audio and real fixture timestam
 test('actual audio slot overflow preserves failed evidence and never truncates or requests later lines', async (t) => {
   const job = voiceJob(); job.segments[0].end_ms = 600;
   const { root, prepared } = await project(t, job); const out = path.join(root, 'run'); let calls = 0;
-  await assert.rejects(synthesizeVoice(prepared, await config(), out, { allowPaid: true, fixture: true, fetchImpl: responseFetch(() => { calls += 1; }) }), { code: 'VOICE_SLOT_OVERFLOW' });
+  await assert.rejects(synthesizeVoice(prepared, await config(), out, { fixture: true, fetchImpl: responseFetch(() => { calls += 1; }) }), { code: 'VOICE_SLOT_OVERFLOW' });
   assert.equal(calls, 1); const failed = JSON.parse(await readFile(path.join(out, 'manifest.json'), 'utf8')); assert.equal(failed.status, 'failed'); assert.ok(failed.utterances[0].duration_ms > 100);
   await access(path.join(out, 'audio/line-1.wav')); await assert.rejects(access(path.join(out, 'subtitles.json')));
   await access(path.join(out, 'responses/line-1.json'));
 });
 test('missing provider timestamps preserve audio but cannot produce a completed voice/subtitle run', async (t) => {
   const { root, prepared } = await project(t); const out = path.join(root, 'run');
-  await assert.rejects(synthesizeVoice(prepared, await config(), out, { allowPaid: true, fixture: true, fetchImpl: responseFetch(() => {}, []) }), { code: 'TIMESTAMPS_MISSING' });
+  await assert.rejects(synthesizeVoice(prepared, await config(), out, { fixture: true, fetchImpl: responseFetch(() => {}, []) }), { code: 'TIMESTAMPS_MISSING' });
   await access(path.join(out, 'audio/line-1.wav')); await assert.rejects(access(path.join(out, 'subtitles.json')));
 });
 test('changed animation blocks paid requests before network or output creation', async (t) => {
   const { root, source, prepared } = await project(t); await writeFile(path.join(source, 'index.html'), html() + '<!-- new source -->'); let calls = 0;
-  await assert.rejects(synthesizeVoice(prepared, await config(), path.join(root, 'run'), { allowPaid: true, fixture: true, fetchImpl: responseFetch(() => { calls += 1; }) }), { code: 'STALE_VOICE_JOB' });
+  await assert.rejects(synthesizeVoice(prepared, await config(), path.join(root, 'run'), { fixture: true, fetchImpl: responseFetch(() => { calls += 1; }) }), { code: 'STALE_VOICE_JOB' });
   assert.equal(calls, 0);
 });
 test('source mutation during a returned response invalidates the completed-looking voice files', async (t) => {
   const { root, source, prepared } = await project(t); const out = path.join(root, 'run');
   const fake = responseFetch();
-  await assert.rejects(synthesizeVoice(prepared, await config(), out, { allowPaid: true, fixture: true, fetchImpl: async (...args) => {
+  await assert.rejects(synthesizeVoice(prepared, await config(), out, { fixture: true, fetchImpl: async (...args) => {
     await writeFile(path.join(source, 'index.html'), html() + '<!-- changed while synthesizing -->'); return fake(...args);
   } }), { code: 'STALE_VOICE_JOB' });
   const record = JSON.parse(await readFile(path.join(out, 'manifest.json'), 'utf8')); assert.equal(record.status, 'failed');
@@ -285,7 +284,7 @@ test('HyperFrames caption insertion is escaped, locally-fonted, above scene, tim
 });
 test('attachment copies to a new AV project, keeps silent source unchanged and rejects altered outputs', async (t) => {
   const { root, source, prepared } = await project(t); const out = path.join(root, 'run');
-  await synthesizeVoice(prepared, await config(), out, { allowPaid: true, fixture: true, fetchImpl: responseFetch() });
+  await synthesizeVoice(prepared, await config(), out, { fixture: true, fetchImpl: responseFetch() });
   const original = await readFile(path.join(source, 'index.html'));
   const result = await attachVoice(path.join(source, 'job.json'), out, path.join(root, 'av'));
   const av = await prepareJob(result.job); assert.equal(av.job.expect_audio, true); assert.ok(av.job.assets.some((s) => s.startsWith('assets/voice-font')));
@@ -336,7 +335,7 @@ test('direction format, leaked credentials and unsupported voice/resource fail b
 test('all batch direction capabilities are checked before first paid line/output', async (t) => {
   const job = voiceJob(); job.segments.push({ ...job.segments[0], id: 'line-2', start_ms: 1600, end_ms: 3000, voice_direction: '高兴地说' });
   const { prepared, root } = await project(t, job); let calls = 0;
-  await assert.rejects(synthesizeVoice(prepared, await config(), path.join(root, 'run'), { allowPaid: true, fixture: true, fetchImpl: responseFetch(() => calls++) }), { code: 'UNSUPPORTED_VOICE_DIRECTION' });
+  await assert.rejects(synthesizeVoice(prepared, await config(), path.join(root, 'run'), { fixture: true, fetchImpl: responseFetch(() => calls++) }), { code: 'UNSUPPORTED_VOICE_DIRECTION' });
   assert.equal(calls, 0); await assert.rejects(access(path.join(root, 'run')));
 });
 test('generic provider registry is explicit and shared audio lifecycle accepts a different adapter format', async (t) => {
@@ -347,16 +346,15 @@ test('generic provider registry is explicit and shared audio lifecycle accepts a
   const other = { id: 'test-other', audioFormat: 'wav', readiness: () => ({ ready: true, missing: [] }), validate() {},
     synthesize: async (_c, _i, opts) => { calls++; return { audio: pcmWave(Buffer.alloc(24000 * 2)), requestId: opts.requestId, request: { fixture: true } }; },
     normalizeTimings: (_r, duration) => { assert.equal(duration, 1000); return [{ text: '看一看。', start_ms: 100, end_ms: 600, confidence: null }]; } };
-  const result = await synthesizeSpeech(other, {}, { text: '看一看。', speakerEnv: 'OTHER_VOICE' }, path.join(root, 'audio'), { allowPaid: true, requestId: 'fixture' });
+  const result = await synthesizeSpeech(other, {}, { text: '看一看。', speakerEnv: 'OTHER_VOICE' }, path.join(root, 'audio'), { requestId: 'fixture' });
   assert.equal(calls, 1); assert.equal(result.durationMs, 1000); assert.equal(result.words[0].start_ms, 100); assert.ok(result.original.endsWith('.source.wav')); assert.ok(result.normalized.endsWith('/audio.wav'));
 });
-test('standalone TTS job needs no render project, keeps hashes, guards paid calls/stale inputs and reuse', async (t) => {
+test('standalone TTS runs without payment opt-in and keeps hashes, stale-input and reuse guards', async (t) => {
   const root = await mkdtemp(path.join(os.tmpdir(), 'tts-job-')); t.after(() => rm(root, { recursive: true, force: true }));
   const file = path.join(root, 'job.json');
   const job = { schema_version: '0.1', id: 'tts-test', artifact_version: 'tts-test-v1', purpose: 'technical_validation', provider: 'volcengine', speaker_env: 'VOLCENGINE_TTS_SPEAKER_NARRATOR', text: '看一看。' };
   await writeFile(file, JSON.stringify(job)); const p = await prepareTtsJob(file); let calls = 0;
-  const opts = { allowPaid: true, fixture: true, fetchImpl: responseFetch(() => calls++) }; const c = await config();
-  await assert.rejects(runTtsJob(p, c, path.join(root, 'no-paid'), { ...opts, allowPaid: false }), { code: 'PAID_SYNTHESIS_NOT_AUTHORIZED' }); assert.equal(calls, 0);
+  const opts = { fixture: true, fetchImpl: responseFetch(() => calls++) }; const c = await config();
   const out = path.join(root, 'run'); const r = await runTtsJob(p, c, out, opts); assert.equal(r.manifest.status, 'completed'); assert.equal(r.manifest.live_provider_call, false); assert.equal(calls, 1);
   assert.equal(readPcmWave(await readFile(path.join(out, 'speech.wav'))).durationMs, r.manifest.duration_ms); assert.ok(r.manifest.output['speech-response.json'].sha256);
   await assert.rejects(runTtsJob(p, c, out, opts), { code: 'EEXIST' }); assert.equal(calls, 1);
@@ -365,10 +363,12 @@ test('standalone TTS job needs no render project, keeps hashes, guards paid call
 test('standalone TTS errors preserve received audio without fake timing success', async (t) => {
   const root = await mkdtemp(path.join(os.tmpdir(), 'tts-errors-')); t.after(() => rm(root, { recursive: true, force: true })); const file = path.join(root, 'job.json');
   await writeFile(file, JSON.stringify({ schema_version: '0.1', id: 'tts-errors', artifact_version: 'tts-errors-v1', purpose: 'exploration', speaker_env: 'VOLCENGINE_TTS_SPEAKER_NARRATOR', text: '看一看。' }));
-  const out = path.join(root, 'run'); await assert.rejects(runTtsJob(await prepareTtsJob(file), await config(), out, { allowPaid: true, fixture: true, fetchImpl: responseFetch(() => {}, []) }), { code: 'TIMESTAMPS_MISSING' });
+  const out = path.join(root, 'run'); await assert.rejects(runTtsJob(await prepareTtsJob(file), await config(), out, { fixture: true, fetchImpl: responseFetch(() => {}, []) }), { code: 'TIMESTAMPS_MISSING' });
   assert.equal(JSON.parse(await readFile(path.join(out, 'manifest.json'))).status, 'failed'); await access(path.join(out, 'speech.mp3')); await access(path.join(out, 'speech.wav'));
 });
 test('standalone TTS CLI rejects secret-bearing, duplicate and mismatched flags safely', () => {
   assert.equal(parseTtsArgs(['providers']).action, 'providers'); assert.equal(parseTtsArgs(['check']).action, 'check');
+  assert.equal(parseTtsArgs(['synthesize','--out','new']).action, 'synthesize');
+  assert.throws(() => parseTtsArgs(['synthesize','--out','new','--allow-paid']));
   for (const args of [['synthesize'], ['providers', '--env', 'x'], ['check', '--allow-paid'], ['check', '--job', 'a', '--job', 'b'], ['check', '--key', 'never-print']]) assert.throws(() => parseTtsArgs(args), e => !e.message.includes('never-print'));
 });

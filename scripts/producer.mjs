@@ -5,8 +5,8 @@ import { realpath } from 'node:fs/promises';
 const runtime = fileURLToPath(new URL('./runtime/', import.meta.url));
 const actions = {
   inspect: ['state'], build: ['input'], check: ['job', 'out', 'quality'], preview: ['job', 'port'], render: ['job', 'out', 'quality'],
-  'tts check': ['job', 'env-file'], 'tts synthesize': ['job', 'env-file', 'out', 'allow-paid'],
-  'asr check': ['audio', 'env-file'], 'asr recognize': ['audio', 'env-file', 'out', 'allow-paid'],
+  'tts check': ['job', 'env-file'], 'tts synthesize': ['job', 'env-file', 'out'],
+  'asr check': ['audio', 'env-file'], 'asr recognize': ['audio', 'env-file', 'out'],
   'music render': ['input', 'out'], 'audio assemble': ['input', 'out'],
   'qa plan': ['job', 'run', 'risks', 'out'], 'qa sample': ['job', 'run', 'plan', 'out'],
   'qa encoded': ['run', 'plan', 'out'], 'qa playback': ['run', 'reuse', 'out'],
@@ -21,8 +21,8 @@ export function parse(argv) {
   while (args.length) {
     const flag = args.shift(); const key = flag?.slice(2);
     if (!flag?.startsWith('--') || ![...actions[action], 'workspace'].includes(key) || key in opts) throw Object.assign(new Error('Unknown or duplicate option'), { code: 'INVALID_ARGUMENT' });
-    if (key === 'allow-paid') opts[key] = true;
-    else { if (!args.length || args[0].startsWith('--')) throw Object.assign(new Error('Missing option value'), {code:'INVALID_ARGUMENT'}); opts[key] = args.shift(); }
+    if (!args.length || args[0].startsWith('--')) throw Object.assign(new Error('Missing option value'), {code:'INVALID_ARGUMENT'});
+    opts[key] = args.shift();
   }
   const required = ['workspace'];
   if (['build','music render','audio assemble','package'].includes(action)) required.push('input');
@@ -39,7 +39,7 @@ export function parse(argv) {
 }
 export async function main(argv) {
   if (argv.length === 1 && ['--help','-h'].includes(argv[0])) {
-    console.log('animated-storybook-producer 0.1.0\nAll commands require --workspace PATH. Paths resolve from the calling cwd. Outputs must be new directories.\n' + Object.entries(actions).map(([k,v]) => `${k}: ${v.map(x=>'--'+x+(x==='allow-paid'?'':' VALUE')).join(' ')}`).join('\n') + '\nSee references/cli.md for required arguments and input contracts.'); return;
+    console.log('animated-storybook-producer 0.1.0\nAll commands require --workspace PATH. Paths resolve from the calling cwd. Outputs must be new directories.\n' + Object.entries(actions).map(([k,v]) => `${k}: ${v.map(x=>'--'+x+' VALUE').join(' ')}`).join('\n') + '\nSee references/cli.md for required arguments and input contracts.'); return;
   }
   const { action, opts } = parse(argv); opts.workspace = await realpath(opts.workspace);
   process.env.STORYBOOK_WORKSPACE = opts.workspace;
@@ -51,7 +51,6 @@ export async function main(argv) {
     const [group, op] = action.split(' '); const forwarded = [op];
     for (const key of ['job','audio','out']) if (opts[key]) forwarded.push('--'+key,opts[key]);
     forwarded.push('--env',opts['env-file'] ?? path.join(opts.workspace,'.env',`volcengine-${group}.env`));
-    if (opts['allow-paid']) forwarded.push('--allow-paid');
     await (await import(`./runtime/scripts/${group}.mjs`)).main(forwarded); return;
   }
   if (['check','preview','render'].includes(action)) {

@@ -9,9 +9,9 @@ Use `node /absolute/path/to/animated-storybook-producer/scripts/producer.mjs --h
 | check / render | --job BUILD/job.json --out DIR | --quality draft/looks/delivery |
 | preview | --job BUILD/job.json | --port NUMBER |
 | tts check | --job FILE | --env-file FILE |
-| tts synthesize | --job FILE --out DIR | --env-file FILE --allow-paid |
+| tts synthesize | --job FILE --out DIR | --env-file FILE |
 | asr check | none | --audio FILE --env-file FILE |
-| asr recognize | --audio FILE --out DIR | --env-file FILE --allow-paid |
+| asr recognize | --audio FILE --out DIR | --env-file FILE |
 | music render / audio assemble | --input FILE --out DIR | none |
 | qa plan | --out DIR and exactly one of --job BUILD/job.json / --run DIR | --risks FILE |
 | qa sample | --job BUILD/job.json --run DIR --plan FILE --out DIR | none |
@@ -20,7 +20,7 @@ Use `node /absolute/path/to/animated-storybook-producer/scripts/producer.mjs --h
 | package | --input FILE --out DIR | none |
 | deliver | --run DIR --review FILE --out DIR | none |
 
-`--allow-paid` is required for network synthesis/recognition and does not replace actual user authorization. Check operations make zero paid requests. Preview stays foreground; stop with Ctrl+C. CLI errors use status/code; provider messages may retain legacy localization, but never expose secret values.
+Network synthesis/recognition runs without an additional payment opt-in flag. The caller selects those billable commands within current task or trusted standing authorization; do not re-prompt for already covered operations. Configuration alone does not authorize unrelated calls. Check operations make zero paid requests. Preview stays foreground; stop with Ctrl+C. CLI errors use status/code; provider messages may retain legacy localization, but never expose secret values.
 
 ## Offline path
 

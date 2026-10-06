@@ -43,11 +43,10 @@ export async function prepareVoiceJob(file) {
 export { pcmWave, readPcmWave } from './audio.mjs';
 
 const saveJson = (file, value) => writeFile(file, JSON.stringify(value, null, 2) + '\n', { mode: 0o600 });
-export async function synthesizeVoice(prepared, config, out, { allowPaid = false, fetchImpl, fixture = false } = {}) {
+export async function synthesizeVoice(prepared, config, out, { fetchImpl, fixture = false } = {}) {
   const provider = getTtsProvider(prepared.job.provider);
   const ready = provider.readiness(config, prepared.speakerEnvs);
   if (!ready.ready) fail('MISSING_CONFIG', `请配置 ${ready.missing.join('、')}；未发送合成请求`);
-  if (!allowPaid) fail('PAID_SYNTHESIS_NOT_AUTHORIZED', '实际合成需要显式 --allow-paid；检查不会请求服务');
   if (fixture && typeof fetchImpl !== 'function') fail('INVALID_TEST_TRANSPORT', '测试夹具必须使用明确注入的响应，不得调用真实服务');
   // Validate all directions/capabilities before the first potentially paid line.
   for (const item of prepared.job.segments) validateSpeechRequest(provider, config, { ...item, speakerEnv: prepared.job.speakers[item.speaker] });
@@ -73,7 +72,7 @@ export async function synthesizeVoice(prepared, config, out, { allowPaid = false
         request_id: randomUUID(), status: 'requesting' };
       manifest.utterances.push(entry); await save();
       const actual = await synthesizeSpeech(provider, config, { ...item, speakerEnv: prepared.job.speakers[item.speaker] }, path.join(output, 'audio', item.id), {
-        allowPaid, requestId: entry.request_id, fetchImpl, metadataFile: path.join(output, 'responses', `${item.id}.json`),
+        requestId: entry.request_id, fetchImpl, metadataFile: path.join(output, 'responses', `${item.id}.json`),
         onAudioReceived: async (r) => { entry.status = 'audio_received'; entry.log_id = r.logId; entry.source_sha256 = r.sourceSha256; await save(); },
       });
       entry.duration_ms = actual.durationMs; entry.path = `audio/${item.id}.wav`; entry.sha256 = actual.sha256; await save();
